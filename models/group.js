@@ -6,11 +6,11 @@ const groupSchema = mongoose.Schema(
         displayName: {
             type: String,
         },
-        members: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
-            required: true
-          }
+        resourceType:{
+            type:String,
+            default:"Group"
+        },
+        users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     },
     {
         timestamps: true

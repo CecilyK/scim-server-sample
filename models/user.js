@@ -5,12 +5,19 @@ var userSchema = mongoose.Schema(
         userName: {
             type: String,
         },
-        email: {
+        externalId: {
             type: String,
         },
-        address: {
-            type: String,
-        }
+        name: {
+            formatted: String,
+            familyName: String,
+            givenName: String
+        },
+        resourceType:{
+            type:String,
+            default:"User"
+        },
+        groups: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Group' }],
     },
     {
         timestamps: true

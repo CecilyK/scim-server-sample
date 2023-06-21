@@ -8,7 +8,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
 // get users
-app.get('/users', async(req, res) => {
+app.get('/scim/users', async(req, res) => {
     try {
         const users = await User.find({});
         res.status(200).json(users);
@@ -17,7 +17,7 @@ app.get('/users', async(req, res) => {
     }
 })
 // get user by id
-app.get('/users/:id', async(req, res) =>{
+app.get('/scim/users/:id', async(req, res) =>{
     try {
         const {id} = req.params;
         const user = await User.findById(id);
@@ -28,7 +28,7 @@ app.get('/users/:id', async(req, res) =>{
 })
 
 // post users
-app.post('/users', async(req, res) => {
+app.post('/scim/users', async(req, res) => {
     try {
         const user = await User.create(req.body)
         res.status(200).json(user);
@@ -40,7 +40,7 @@ app.post('/users', async(req, res) => {
 })
 
 // update a user
-app.put('/user/:id', async(req, res) => {
+app.put('/scim/users/:id', async(req, res) => {
     try {
         const {id} = req.params;
         const user = await User.findByIdAndUpdate(id, req.body);
@@ -57,14 +57,14 @@ app.put('/user/:id', async(req, res) => {
 })
 
 // delete a user
-app.delete('/users/:id', async(req, res) =>{
+app.delete('/scim/users/:id', async(req, res) =>{
     try {
         const {id} = req.params;
         const user = await User.findByIdAndDelete(id);
         if(!user){
             return res.status(404).json({message: `cannot find any user with ID ${id}`})
         }
-        res.status(200).json(user);
+        res.status(200).json({message: "Successfully deleted"});
 
     } catch (error) {
         res.status(500).json({message: error.message})
@@ -72,7 +72,7 @@ app.delete('/users/:id', async(req, res) =>{
 })
 
 // get groups
-app.get('/groups', async(req, res) => {
+app.get('/scim/groups', async(req, res) => {
     try {
         const groups = await Group.find({});
         res.status(200).json(groups);
@@ -82,7 +82,7 @@ app.get('/groups', async(req, res) => {
 })
 
 // get groups by id
-app.get('/groups/:id', async(req, res) =>{
+app.get('/scim/groups/:id', async(req, res) =>{
     try {
         const {id} = req.params;
         const group = await Group.findById(id);
@@ -93,7 +93,7 @@ app.get('/groups/:id', async(req, res) =>{
 })
 
 // post a group
-app.post('/groups', async(req, res) => {
+app.post('/scim/groups', async(req, res) => {
     try {
         const group = await Group.create(req.body)
         res.status(200).json(group);
@@ -105,7 +105,7 @@ app.post('/groups', async(req, res) => {
 })
 
 // update a group
-app.put('/groups/:id', async(req, res) => {
+app.put('/scim/groups/:id', async(req, res) => {
     try {
         const {id} = req.params;
         const group = await Group.findByIdAndUpdate(id, req.body);
@@ -122,19 +122,43 @@ app.put('/groups/:id', async(req, res) => {
 })
 
 // delete a group
-app.delete('/groups/:id', async(req, res) =>{
+app.delete('/scim/groups/:id', async(req, res) =>{
     try {
         const {id} = req.params;
         const group = await Group.findByIdAndDelete(id);
         if(!user){
             return res.status(404).json({message: `cannot find any group with ID ${id}`})
         }
-        res.status(200).json(group);
+        res.status(200).json({message: "Successfully deleted"});
 
     } catch (error) {
         res.status(500).json({message: error.message})
     }
 })
+
+
+// Create a new user and add them to a group
+app.post('/scim/users/:id/groups/:groupId', async (req, res) => {
+    try {
+      const { id, groupId } = req.params;
+
+      const user = await User.findByIdAndUpdate(
+        id,
+        { $push: { groups: groupId } },
+        { new: true }
+      ).exec();
+      const group = await Group.findByIdAndUpdate(
+        groupId,
+        { $push: { users: id } },
+        { new: true }
+      ).exec();
+      res.json(user);
+    } catch (error) {
+      console.error('Error adding user to group:', error);
+      res.status(500).json({ error: 'Failed to add user to group' });
+    }
+  });
+
 
 mongoose.set("strictQuery", false)
 mongoose.
