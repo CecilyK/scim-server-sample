@@ -165,8 +165,8 @@ mongoose.
 connect('mongodb+srv://kingoricecily100:zm0w8zX12lqfYEEK@cluster0.yydq50u.mongodb.net/?retryWrites=true&w=majority')
 .then(() => {
     console.log('connected to MongoDB')
-    app.listen(3000, ()=> {
-        console.log(`Node API app is running on port 3000`)
+    app.listen(8080, ()=> {
+        console.log(`Node API app is running on port 8080`)
     });
 }).catch((error) => {
     console.log(error)
