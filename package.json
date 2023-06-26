@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "sample scim server",
   "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -13,6 +10,7 @@
     "body-parser": "^1.20.2",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
+    "mocha": "^10.2.0",
     "mongodb": "^5.6.0",
     "mongoose": "^7.3.0",
     "uuid": "^9.0.0"
