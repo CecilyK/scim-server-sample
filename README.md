@@ -1,5 +1,6 @@
 # SCIM server sample
 This is a simple sample of a SCIM server written using NodeJS and MongoDB as the data storage.
+Currrently testing for compatibility with Azure AD SCIM client using the [SCIM validator](https://scimvalidator.microsoft.com/)
 
 ## Functionality supported
 
