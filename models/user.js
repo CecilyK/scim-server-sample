@@ -2,10 +2,14 @@ const mongoose = require('mongoose')
 
 var userSchema = mongoose.Schema(
     {
-        userName: {
-            type: String,
+        schemas : {
+            type:Array,
+            default:["urn:ietf:params:scim:schemas:core:2.0:User"]
         },
-        externalId: {
+        id :{
+            type:String
+        },
+        userName: {
             type: String,
         },
         name: {
@@ -13,15 +17,19 @@ var userSchema = mongoose.Schema(
             familyName: String,
             givenName: String
         },
-        resourceType:{
-            type:String,
-            default:"User"
+        meta: {
+            resourceType:{
+                type:String,
+                default:"User"
+            },
         },
-        groups: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Group' }],
+            Resources: {
+                type:Array,
+        },
+
+        // groups: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Group' }],
     },
-    {
-        timestamps: true
-    }
+    { versionKey: false }
 )
 
 
